@@ -48,3 +48,12 @@ From this categorical features EDA there are some conclusion that can be made
 ```bin_labels = ['near', 'medium', 'far']```
  * Lastly the binned features are one-hot encoded
   * Note: for the subsequent features, everytime there is binning, there is also encoding
+
+### 'category', 'state'
+* 'category' was binned based on the intrinsic category of the values. In this case the first step was to combine the _pos (point of sale/offline purchase) and _net categories (online purchase) into a 'combined_category'. Afterwards it was split again into two categories namely 'essential_categories' and 'non_essential_categories' before encoding. This is done to prevent overdimensionality of this feature caused by encoding too many values of 'category'
+
+```essential_categories = ['grocery_combined', 'health_fitness', 'personal_care', 'home', 'food_dining']```
+
+```non_essential_categories = ['misc_combined', 'entertainment', 'gas_transport', 'shopping_combined', 'travel', 'kids_pets']```
+
+*  'state' was also engineered into bins based on US census regions as it refers to [here](https://www2.census.gov/geo/pdfs/maps-data/maps/reference/us_regdiv.pdf) before encoding. This is also to prevent overdimensionality of the feature
