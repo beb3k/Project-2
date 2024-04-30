@@ -57,3 +57,38 @@ From this categorical features EDA there are some conclusion that can be made
 ```non_essential_categories = ['misc_combined', 'entertainment', 'gas_transport', 'shopping_combined', 'travel', 'kids_pets']```
 
 *  'state' was also engineered into bins based on US census regions as it refers to [here](https://www2.census.gov/geo/pdfs/maps-data/maps/reference/us_regdiv.pdf) before encoding. This is also to prevent overdimensionality of the feature
+
+### 'dob'
+* the date of birth featured is used to infer a new feature 'age', and then 'age' was binned to 'age_group' with these labels
+
+```bins = [18, 35, 58, 99]```
+
+```labels = ['muda', 'paruhbaya', 'tua']```
+
+'age_group' was subsequently one-hot encoded
+
+### 'zip'
+This feature is arguably the most complicated to engineer as it involves multiple features to infer some information and to derive several new features
+
+* First, some value and unique counting. It yields 970 unique values with zip value of 73754 appeared 3646 times
+* Second, multivariate profiling of 'zip'. Aggregating 'amt' and 'isFraud' based on 'zip'. This aggregation yields several new features that is created on a separate dataset 'zip_profile'. For clarity please refer to this code snippet:
+
+`# Step 1: Aggregasi data berdasar 'zip'
+zip_profile = df.groupby('zip').agg(
+    total_transactions=('amt', 'count'),
+    total_amt=('amt', 'sum'),
+    average_amt=('amt', 'mean'),
+    fraud_transactions=('is_fraud', 'sum')
+).reset_index()`
+
+From this, the new feature 'fraud_rate' can be calculated
+
+`zip_profile['fraud_rate'] = zip_profile['fraud_transactions'] / zip_profile['total_transactions']`
+
+The value counts can be counted based on the fraud rate:
+
+`value_counts_fraud_rate = zip_profile['fraud_rate'].value_counts().head(10)
+print(value_counts_fraud_rate)`
+
+A new feature called 'fraud_risk can 
+* Third, the original dataset 'zip' values can be mapped to a certain 
