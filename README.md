@@ -15,7 +15,8 @@ This project concerns the building a predictive model to detect fraud using a si
   * .value_counts()
   * .nunique()
   * Pie-chart visualization of 'category' and 'state'
-* Bivariate visualization (bar-chart)
+* Bivariate EDA
+  * visualization (bar-chart)
   * 'category' vs 'isFraud' value of class 0
   * 'category' vs 'isFraud' value of class 1
   * 'state' vs 'isFraud' value of class 0
@@ -29,5 +30,21 @@ From this categorical features EDA there are some conclusion that can be made
 * The highest fraud number in 'state' is in 'TX' with 479 fraud
 * The highest fraud proportion in 'state' is in 'DE' with 100% of total transaction in that state
 
+### Numerical features
+* The EDA for numerical features are done bivarietely between 'zip' and 'isFraud' as a part of feature engineering as it will be explained below
 
-  ## Feature engineering
+## Feature engineering
+
+### 'long', 'lat', 'merch_long', 'merch_lat'
+* This part combines the four aforementioned features above into one singular feature called 'dist' using the Haversine formula
+
+### 'dist'
+* The new feature 'dist' was re-engineered into a binned feature 'dist_bin'
+ * The binning is based on interval binning by first calculating the mean and std of 'dist' and then defining the edges of the according to this code:
+
+```bin_edges = [0, mean - 2*std, mean + std, float('inf')]```
+ * The bin labels are assinged as such:
+
+```bin_labels = ['near', 'medium', 'far']```
+ * Lastly the binned features are one-hot encoded
+  * Note: for the subsequent features, everytime there is binning, there is also encoding
