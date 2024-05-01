@@ -148,3 +148,49 @@ zip_profile['trans_count_zip'] = zip_profile['fraud_risk'].map(avg_trans_counts)
 ```
 
 ## Modeling
+
+Modeling were attempted using simple logistic regression, a more advanced Random Forest, and finally XGBoost. The preferred evaluation parameter is precision and recall to class 1 (fraud), which is surmized as the F1 score. The tradeoff between precision recall means in the context of this case, precision is preferred, higher precision for class 1 means less false positives which is important to maintain customer's trust and reduce hassle on their part and quite possibly more relevant in the banking industry.
+
+Details are to be explained below
+
+### Logistic Regression
+
+The widely accepted norm of machine learning modeling, that is, 'use the simplest model first' remains here. As explained before that because the data is highly imbalanced, certain measures were to be done to try to balance the data. The first attempt was using only SMOTE. 
+
+```
+sm = SMOTE(random_state=42)
+X_train_res, y_train_res = sm.fit_resample(X_train, y_train)
+```
+
+The second attempt was by using SMOTE together with undersampling
+
+```
+resampling = Pipeline([
+    ('smote', SMOTE(sampling_strategy=0.1, random_state=42)),  # Oversampling minority class menjadi 10% majority class
+    ('under', RandomUnderSampler(sampling_strategy=0.5, random_state=42))  # Undersample majority class 0.5x minority class setelah SMOTE
+])
+```
+
+Both looks to be inadequate as evidenced by the extremely low class 1 precision in spite of the balancing measures.
+
+For detailed result please refer to the attached Jupyter Notebook
+
+### Random Forest
+
+All of the RF attempts includes the SMOTE and undersampling from above.
+
+The first RF attempt used the default parameters ofthe RandomForestClassifier from sklearn.ensemble
+
+The second attempt used the Grid Search hyperparameter tuning method. This is an unsuccesful attempt as the grid search took too long
+
+```
+param_grid = {
+    'n_estimators': [100, 200, 300],
+    'max_depth': [None, 10, 20, 30], 
+    'min_samples_split': [2, 5, 10], 
+    'min_samples_leaf': [1, 2, 4],
+    'bootstrap': [True, False]
+}
+```
+
+The third attempt used another method of tunig that is RandomizedSearchCV
