@@ -191,6 +191,40 @@ param_grid = {
     'min_samples_leaf': [1, 2, 4],
     'bootstrap': [True, False]
 }
+
+grid_search = GridSearchCV(estimator=rf, param_grid=param_grid,
+                           cv=3, n_jobs=-1, verbose=2, scoring=scorer)
 ```
 
-The third attempt used another method of tunig that is RandomizedSearchCV
+The third attempt used another method of tuning namely RandomizedSearchCV. With initial parameters, this also took a long time, as a result the parameters were also simplified. The code snippet below highlights the simplified params
+
+```
+param_dist = {
+    'n_estimators': [50, 100, 150],
+    'max_depth': [None, 5, 10],
+    'min_samples_split': [2, 5],
+    'min_samples_leaf': [1, 2],
+    'bootstrap': [True]
+}
+
+random_search = RandomizedSearchCV(estimator=rf, param_distributions=param_dist,
+                                   n_iter=5, cv=2, verbose=2, random_state=42, n_jobs=-1, scoring=scorer)
+```
+
+An extra attempt was made from the RandomizedSearchCV, adding another parameter called 'class_weight' as shown in the snippet below:
+
+```
+param_dist = {
+    'n_estimators': [50, 100, 150],
+    'max_depth': [None, 5, 10],
+    'min_samples_split': [2, 5],
+    'min_samples_leaf': [1, 2],
+    'bootstrap': [True],
+    'class_weight': ['balanced', 'balanced_subsample']
+}
+```
+
+RF seems to yield better precision result but worse recall than logistic regression. Nevertheless, the last modeling attempted by using XGBoost
+
+### XGBoost
+
