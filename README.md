@@ -41,7 +41,7 @@ From this categorical features EDA there are some conclusion that can be made
 
 ### 'dist'
 * The new feature 'dist' was re-engineered into a binned feature 'dist_bin'
- * The binning is based on interval binning by first calculating the mean and std of 'dist' and then defining the edges of the according to this code:
+ * The binning was based on interval binning by first calculating the mean and std of 'dist' and then defining the edges of the according to this code:
 
 `bin_edges = [0, mean - 2*std, mean + std, float('inf')]`
 
@@ -50,10 +50,10 @@ From this categorical features EDA there are some conclusion that can be made
 `bin_labels = ['near', 'medium', 'far']`
 
  * Lastly the binned features are one-hot encoded
-  * Note: for the subsequent features, everytime there is binning, there is also encoding
+  * Note: for the subsequent features, everytime there was binning, there was also encoding
 
 ### 'category', 'state'
-* 'category' was binned based on the intrinsic category of the values. In this case the first step was to combine the _pos (point of sale/offline purchase) and _net categories (online purchase) into a 'combined_category'. Afterwards it was split again into two categories namely 'essential_categories' and 'non_essential_categories' before encoding. This is done to prevent overdimensionality of this feature caused by encoding too many values of 'category'
+* 'category' was binned based on the intrinsic category of the values. In this case the first step was to combine the _pos (point of sale/offline purchase) and _net categories (online purchase) into a 'combined_category'. Afterwards it was split again into two categories namely 'essential_categories' and 'non_essential_categories' before encoding. This was done to prevent overdimensionality of this feature caused by encoding too many values of 'category'
 
 ```essential_categories = ['grocery_combined', 'health_fitness', 'personal_care', 'home', 'food_dining']```
 
@@ -62,7 +62,7 @@ From this categorical features EDA there are some conclusion that can be made
 *  'state' was also engineered into bins based on US census regions as it refers to [here](https://www2.census.gov/geo/pdfs/maps-data/maps/reference/us_regdiv.pdf) before encoding. This is also to prevent overdimensionality of the feature
 
 ### 'dob'
-* the date of birth featured is used to infer a new feature 'age', and then 'age' was binned to 'age_group' with these labels
+* the date of birth featured was used to infer a new feature 'age', and then 'age' was binned to 'age_group' with these labels
 
 ```bins = [18, 35, 58, 99]```
 
@@ -108,7 +108,7 @@ def classify_fraud_risk(rate):
 
 This feature was also one-hot encoded
 
-* Third, the value of 'fraud_risk' is mapped to every 'zip'. It was initially done on the 'zip_profile' datarame and then assigned to the original dataframe 'df'
+* Third, the value of 'fraud_risk' was mapped to every 'zip'. It was initially done on the 'zip_profile' datarame and then assigned to the original dataframe 'df'
 
 ```
 # Mapping 'fraud_risk' untuk setiap 'zip' di dataframe 'zip_profile'
@@ -137,7 +137,7 @@ zip_avg_mapping = zip_profile.set_index('zip')['avg_trans_amt'].to_dict()
 df['avg_trans_amt'] = df['zip'].map(zip_avg_mapping)
 ```
 
-* Fifth and final step is to calculate the average transaction count for every 'fraud_risk' into a new feature called 'trans_count_zip'. The same steps were taken as the above features
+* Fifth and final step was to calculate the average transaction count for every 'fraud_risk' into a new feature called 'trans_count_zip'. The same steps were taken as the above features
 
 ```
 # Hitung mean untuk jumlah transaksi tiap kategori 'fraud_risk'
@@ -242,7 +242,7 @@ The result for the first attempt is 0.49 for class 1 precision, for the second a
 
 ## Discussion
 
-All three models has their own limitations. The best for class 1 precision were either the RFs or the default XGBoost, while the best for recall is either the logisitc regressions or the weighted XGBoost. Attempts were made to stack the logistic regression and the default XGBoost which yield the best result for both worlds although the recall is still very low.
+All three models apparently has their own limitations for this dataset. The best for class 1 precision were either the RFs or the default XGBoost, while the best for recall is either the logistic regressions or the weighted XGBoost. Attempts were made to stack the logistic regression and the default XGBoost which yield the best result for both worlds although the recall is still very low.
 
 ## What to do next?
 
