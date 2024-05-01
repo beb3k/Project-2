@@ -228,3 +228,32 @@ RF seems to yield better precision result but worse recall than logistic regress
 
 ### XGBoost
 
+two attempts at using XGBoost, first using default settings from xgboost and then by weighted to minority adjustment using the below code below to calculate the weight
+
+```
+scale_pos_weight = y.value_counts()[0] / y.value_counts()[1]
+```
+
+This line calculates the class weights using the value_counts() method of the pandas Series y. The value_counts() method counts the frequency of each unique value in the Series. In this case, it counts the number of times each class label (1 and 0) appears in the Series y.
+
+The code then divides the count of the positive class (y.value_counts()[0]) by the count of the negative class (y.value_counts()[1]). This gives the weight for the positive class, which we know as the 1 class (fraud)
+
+The result for the first attempt is 0.49 for class 1 precision, for the second attempt the result is good for recall for class 1 at 0.79
+
+## Discussion
+
+All three models has their own limitations. The best for class 1 precision were either the RFs or the default XGBoost, while the best for recall is either the logisitc regressions or the weighted XGBoost. Attempts were made to stack the logistic regression and the default XGBoost which yield the best result for both worlds although the recall is still very low.
+
+## What to do next?
+
+Some things can be done to improve upon these model including but not limited to
+
+- Different more advanced resampling methods
+- Further hyperparams tuning
+- Further feature engineering
+ - RFE
+ - L1 regularization
+ - Adding other features that hasn't been incorporated yet
+
+# Acknowledgements
+- [Bayuzen Ahmad](https://www.linkedin.com/in/bayuzenahmad/)
